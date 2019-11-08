@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">FallDetectorLibrary</string>
+    <string name="channel_name">Behaviour</string>
+    <string name="channel_description">Show notification when device fell down</string>
+    <string name="notification_title">Are you fine?</string>
+    <string name="notification_description">We detected that your device felt down. Are you fine?</string>
+    <string name="title_activity_notification">NotificationActivity</string>
+
+</resources>
