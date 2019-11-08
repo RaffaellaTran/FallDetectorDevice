@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Fall Detector App</string>
+    <string name="duration_title">DURATION</string>
+    <string name="date_title">DATE</string>
+    <string name="title_text">List of the start date and duration of the falling device</string>
+    <string name="empty_list">The list of the device falls is empty!!!</string>
+    <string name="error_generic">Uh-oh. An error has occurred. Please try again.</string>
+</resources>
