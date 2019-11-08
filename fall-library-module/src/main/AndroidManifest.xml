@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.app.raffaellatran.falldetectorlibrary">
+
+    <uses-feature
+        android:name="android.hardware.sensor.gyroscope"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.accelerator"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application
+        android:name="com.app.raffaellatran.falldetectorlibrary.FallDetectorLibrary"
+        android:allowBackup="true"
+        android:launchMode="singleTask"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <service
+            android:name="com.app.raffaellatran.falldetectorlibrary.data.service.FallDetectorService"
+            android:enabled="true"
+            android:exported="true" />
+    </application>
+
+</manifest>
