@@ -2,7 +2,7 @@ package com.app.raffaellatran.falldetectorlibrary
 
 import android.app.Application
 
-class FallDetectorLibrary : Application() {
+class FallLibrary : Application() {
 
     lateinit var appComponent: AppComponent
 

@@ -1,9 +1,9 @@
 package com.app.raffaellatran.fall_detector
 
-import com.app.raffaellatran.fall_detector.presenter.FallDetectorPresenter
-import com.app.raffaellatran.fall_detector.ui.FallDetectorView
-import com.app.raffaellatran.falldetectorlibrary.data.model.FallDetectorModel
-import com.app.raffaellatran.falldetectorlibrary.data.service.FallDetectorRepository
+import com.app.raffaellatran.fall_detector.presenter.FallPresenter
+import com.app.raffaellatran.fall_detector.ui.FallView
+import com.app.raffaellatran.falldetectorlibrary.data.model.FallModel
+import com.app.raffaellatran.falldetectorlibrary.data.service.FallRepository
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Observable
@@ -20,30 +20,30 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 
 @RunWith(MockitoJUnitRunner.Silent::class)
-class FallDetectorPresenterShould {
+class FallPresenterShould {
 
     @Mock
-    lateinit var fallDetectorView: FallDetectorView
+    lateinit var fallView: FallView
     @Mock
-    lateinit var fallDetectorRepository: FallDetectorRepository
+    lateinit var fallRepository: FallRepository
     @Mock
-    lateinit var fallDetectorPresenter: FallDetectorPresenter
+    lateinit var fallPresenter: FallPresenter
 
     private val fallDetectorModel =
-        FallDetectorModel(
+        FallModel(
             fallDate = LocalDateTime.of(
                 LocalDate.of(2019, 9, 22),
                 LocalTime.of(12, 22, 32, 42)
             ), fallDuration = 34
         )
     private val fallList = arrayListOf(fallDetectorModel)
-    private val fallEmptyList = arrayListOf<FallDetectorModel>()
+    private val fallEmptyList = arrayListOf<FallModel>()
 
     @Before
     fun setUp() {
         RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
         Schedulers.trampoline()
-        fallDetectorPresenter.onCreate(fallDetectorView)
+        fallPresenter.onCreate(fallView)
     }
 
     @After
@@ -54,28 +54,28 @@ class FallDetectorPresenterShould {
     @Test
     fun `should show the list in the activity`() {
         `should give a successful fall detector service call`(fallList)
-        fallDetectorPresenter.showTimeDurationFall()
-        verify(fallDetectorPresenter).showTimeDurationFall()
+        fallPresenter.showTimeDurationFall()
+        verify(fallPresenter).showTimeDurationFall()
     }
 
     @Test
     fun `should show a text instead of the list in the activity`() {
         `should give a successful fall detector service call`(fallEmptyList)
-        fallDetectorPresenter.showTimeDurationFall()
-        verify(fallDetectorPresenter).showTimeDurationFall()
+        fallPresenter.showTimeDurationFall()
+        verify(fallPresenter).showTimeDurationFall()
     }
 
     @Test
     fun `should show an error in the activity`() {
         `should give a successful fall detector service call`(RuntimeException("test"))
-        fallDetectorPresenter.showTimeDurationFall()
-        verify(fallDetectorPresenter).showTimeDurationFall()
+        fallPresenter.showTimeDurationFall()
+        verify(fallPresenter).showTimeDurationFall()
     }
 
-    private fun `should give a successful fall detector service call`(result: List<FallDetectorModel>) {
-        whenever(fallDetectorRepository.getAll()).thenReturn(Observable.just(result))
+    private fun `should give a successful fall detector service call`(result: List<FallModel>) {
+        whenever(fallRepository.getAll()).thenReturn(Observable.just(result))
     }
 
     private fun `should give a successful fall detector service call`(exception: Throwable) =
-        whenever(fallDetectorRepository.getAll()).thenReturn(Observable.error(exception))
+        whenever(fallRepository.getAll()).thenReturn(Observable.error(exception))
 }

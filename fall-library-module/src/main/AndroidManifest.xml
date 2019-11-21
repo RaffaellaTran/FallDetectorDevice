@@ -12,16 +12,12 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name="com.app.raffaellatran.falldetectorlibrary.FallDetectorLibrary"
+        android:name="com.app.raffaellatran.falldetectorlibrary.FallLibrary"
         android:allowBackup="true"
         android:launchMode="singleTask"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service
-            android:name="com.app.raffaellatran.falldetectorlibrary.data.service.FallDetectorService"
-            android:enabled="true"
-            android:exported="true" />
     </application>
 
 </manifest>

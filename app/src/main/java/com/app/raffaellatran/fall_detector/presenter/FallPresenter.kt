@@ -1,19 +1,19 @@
 package com.app.raffaellatran.fall_detector.presenter
 
-import com.app.raffaellatran.fall_detector.ui.FallDetectorView
-import com.app.raffaellatran.falldetectorlibrary.data.model.FallDetectorModel
+import com.app.raffaellatran.fall_detector.ui.FallView
+import com.app.raffaellatran.falldetectorlibrary.data.model.FallModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
-class FallDetectorPresenter constructor(private val fallListObservable: Observable<List<FallDetectorModel>>) {
+class FallPresenter constructor(private val fallListObservable: Observable<List<FallModel>>) {
 
-    private lateinit var view: FallDetectorView
+    private lateinit var view: FallView
     private val subscriptions = CompositeDisposable()
 
-    fun onCreate(view: FallDetectorView) {
+    fun onCreate(view: FallView) {
         this.view = view
     }
 
@@ -26,7 +26,7 @@ class FallDetectorPresenter constructor(private val fallListObservable: Observab
                     if (fallList.isEmpty()) {
                         view.showEmptyList()
                     } else {
-                        view.showFallList(fallList as ArrayList<FallDetectorModel>)
+                        view.showFallList(fallList as ArrayList<FallModel>)
 
                     }
                 }, { throwable ->

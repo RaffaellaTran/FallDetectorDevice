@@ -14,9 +14,9 @@ import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.app.raffaellatran.falldetectorlibrary.FallDetectorLibrary
+import com.app.raffaellatran.falldetectorlibrary.FallLibrary
 import com.app.raffaellatran.falldetectorlibrary.R
-import com.app.raffaellatran.falldetectorlibrary.data.model.FallDetectorModel
+import com.app.raffaellatran.falldetectorlibrary.data.model.FallModel
 import io.reactivex.Observable
 import timber.log.Timber
 import java.time.LocalDateTime
@@ -24,7 +24,7 @@ import java.time.ZoneOffset
 import javax.inject.Inject
 import kotlin.math.sqrt
 
-class FallDetectorService : Service(), SensorEventListener {
+class FallService : Service(), SensorEventListener {
 
     private lateinit var mSensorManager: SensorManager
     private lateinit var mAccelerometer: Sensor
@@ -39,16 +39,16 @@ class FallDetectorService : Service(), SensorEventListener {
     private val CHANNEL_ID = "show notification"
 
     @Inject
-    lateinit var fallDetectorRepository: FallDetectorRepository
+    lateinit var fallRepository: FallRepository
 
     override fun onCreate() {
         super.onCreate()
-        (applicationContext as FallDetectorLibrary).appComponent.inject(this)
+        (applicationContext as FallLibrary).appComponent.inject(this)
         FallNotification(this).setToForeground()
     }
 
     override fun onBind(intent: Intent?): IBinder? =
-        FallDetectorServiceBinder(fallDetectorRepository.getAll())
+        FallDetectorServiceBinder(fallRepository.getAll())
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
@@ -90,19 +90,19 @@ class FallDetectorService : Service(), SensorEventListener {
 
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
 
-            fallFreeDetected(gZ, startDateTimeInMS)
-            shakeDetected(gForce, startDateTimeInMS)
+            isFreeFalling(gZ, startDateTimeInMS)
+            isShaking(gForce, startDateTimeInMS)
 
         } else {
 
             if (event.sensor.type == Sensor.TYPE_GYROSCOPE) {
-                rotationDetected(event)
+                isRotating(event)
             }
         }
     }
 
     // function to detect shake. For future work related shake, implement here
-    private fun shakeDetected(gForce: Float, startDateTimeInMS: Long) {
+    private fun isShaking(gForce: Float, startDateTimeInMS: Long) {
 
         if (gForce > shakeThreshold && startDateTimeInMS + slopTimeMS > startDateTimeInMS) {
             Timber.d("SHAKE")
@@ -110,7 +110,7 @@ class FallDetectorService : Service(), SensorEventListener {
     }
 
     // function to detect free fall.
-    private fun fallFreeDetected(gZ: Float, startDateTimeInMS: Long) {
+    private fun isFreeFalling(gZ: Float, startDateTimeInMS: Long) {
         if (gZ < gravityThreshold) {
             //assign value for having the correct time
             startDateTime = LocalDateTime.now()
@@ -125,18 +125,18 @@ class FallDetectorService : Service(), SensorEventListener {
             val duration = endFallInMS - startFallInMS
 
             if (duration > slopTimeMS && endFallInMS > startFallInMS) {
-                val fall = FallDetectorModel(
+                val fall = FallModel(
                     fallDate = startDateTime,
                     fallDuration = duration
                 )
-                saveDateDuration(fall)
+                saveFall(fall)
                 FallNotification(this).sendNotification()
             }
         }
     }
 
     // function to detect rotation. For future work related rotation, implement here
-    private fun rotationDetected(event: SensorEvent) {
+    private fun isRotating(event: SensorEvent) {
         val axisX = event.values[0]
         val axisY = event.values[1]
         val axisZ = event.values[2]
@@ -149,15 +149,15 @@ class FallDetectorService : Service(), SensorEventListener {
         }
     }
 
-    private fun saveDateDuration(fallDetector: FallDetectorModel) {
-        fallDetectorRepository.addFall(fallDetector)
+    private fun saveFall(fall: FallModel) {
+        fallRepository.addFall(fall)
     }
 
     companion object {
         const val EXTRA_ACTIVITY_CLASS = "EXTRA_ACTIVITY_CLASS"
     }
 
-    inner class FallDetectorServiceBinder(val fallList: Observable<List<FallDetectorModel>>) :
+    inner class FallDetectorServiceBinder(val fallList: Observable<List<FallModel>>) :
         Binder()
 
     inner class FallNotification(val context: Context) {

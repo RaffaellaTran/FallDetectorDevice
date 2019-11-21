@@ -6,11 +6,11 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import java.time.LocalDateTime
 
-@Entity(tableName = "fallDetectorDatabase")
-data class FallDetectorModel(
+@Entity(tableName = "fallDatabase")
+data class FallModel(
     @PrimaryKey(autoGenerate = true) var fallId: Int = 0,
-    @ColumnInfo(name = "fall_detector_date") val fallDate: LocalDateTime,
-    @ColumnInfo(name = "fall_detector_duration") val fallDuration: Long
+    @ColumnInfo(name = "fall_date") val fallDate: LocalDateTime,
+    @ColumnInfo(name = "fall_duration") val fallDuration: Long
 )
 
 class Converters {

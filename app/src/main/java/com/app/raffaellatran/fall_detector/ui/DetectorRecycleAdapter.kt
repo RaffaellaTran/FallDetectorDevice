@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.raffaellatran.fall_detector.R
-import com.app.raffaellatran.falldetectorlibrary.data.model.FallDetectorModel
+import com.app.raffaellatran.falldetectorlibrary.data.model.FallModel
 import kotlinx.android.synthetic.main.adapter_detector.view.*
 import java.time.format.DateTimeFormatter
 
 class DetectorRecycleAdapter :
     RecyclerView.Adapter<DetectorRecycleAdapter.MyViewHolder>() {
 
-    private var fallList = ArrayList<FallDetectorModel>()
+    private var fallList = ArrayList<FallModel>()
     private var formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm:ss")
 
     override fun onCreateViewHolder(
@@ -25,7 +25,7 @@ class DetectorRecycleAdapter :
         return MyViewHolder(view)
     }
 
-    fun setFallList(fallList: List<FallDetectorModel>) {
+    fun setFallList(fallList: List<FallModel>) {
         this.fallList.clear()
         this.fallList.addAll(fallList)
     }
