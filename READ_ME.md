@@ -1,4 +1,4 @@
-# Android Engineer - Solution
+# Detecting fall device
 
 Before implementing the solution, I started reading some papers regarding how to detect fall devices. 
 Most of the articles have similar solutions using acceleration sensors and service in Android devices. 
@@ -9,11 +9,11 @@ particular on the z ax for the falling and the net force for the shaking.
 Gyroscope sensors register the angular speed on the three axes. I used them for detecting the rotation 
 of the device.
 
-An Android service constantly runs in the background. One of the requirements is to monitor the movement 
-regularly, so when the service suspects a fall, the date and duration of the event are saved in the 
-database and a notification is sent. For future implementation, a call button can be implemented.
+An Android service constantly runs in the background and monitor the movement regularly, so when 
+the service suspects a fall, the date and duration of the event are saved in the database and a 
+notification is sent to the user. For future implementation, a call button can be implemented.
 
-For testing the app, it requires an Android device with at least version 8.
+For testing the app, it requires an Android device with at least version Oreo.
 I tested the app on my device Pocophone.
 
 The app is a simple list of fall events showing the date and the duration of each of them.
