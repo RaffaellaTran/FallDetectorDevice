@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity(), FallDetectorView {
 
         val dividerItemDecoration = DividerItemDecoration(
             recycler_view.context,
-            recycler_view.resources.configuration.orientation
+            DividerItemDecoration.VERTICAL
         )
         recycler_view.addItemDecoration(dividerItemDecoration)
     }
